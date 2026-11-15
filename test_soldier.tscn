@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://fugluhokydqj"]
+
+[ext_resource type="PackedScene" uid="uid://bljsoiv60n2xu" path="res://Soldier.glb" id="1_soldier"]
+
+[node name="TestSoldier" type="Node3D" unique_id=1512689408]
+
+[node name="Soldier" parent="." unique_id=1209075739 instance=ExtResource("1_soldier")]

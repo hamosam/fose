@@ -1,0 +1,101 @@
+[gd_scene load_steps=12 format=3 uid="uid://cmonster001"]
+
+[ext_resource type="Script" path="res://monster.gd" id="1_monster"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.5
+height = 1.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
+albedo_color = Color(0.35, 0.12, 0.45, 1)
+roughness = 0.4
+emission_enabled = true
+emission = Color(0.25, 0.08, 0.35, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_body"]
+material = SubResource("StandardMaterial3D_body")
+radius = 0.55
+height = 1.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sclera"]
+albedo_color = Color(0.96, 0.96, 0.98, 1)
+roughness = 0.2
+emission_enabled = true
+emission = Color(0.9, 0.9, 1, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="SphereMesh" id="SphereMesh_eye_white"]
+material = SubResource("StandardMaterial3D_sclera")
+radius = 0.16
+height = 0.32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pupil"]
+albedo_color = Color(0.08, 0.05, 0.12, 1)
+roughness = 0.1
+
+[sub_resource type="SphereMesh" id="SphereMesh_pupil"]
+material = SubResource("StandardMaterial3D_pupil")
+radius = 0.08
+height = 0.16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_horn"]
+albedo_color = Color(0.85, 0.35, 0.5, 1)
+emission_enabled = true
+emission = Color(0.85, 0.2, 0.4, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_horn"]
+material = SubResource("StandardMaterial3D_horn")
+top_radius = 0.01
+bottom_radius = 0.08
+height = 0.25
+
+[node name="Monster" type="CharacterBody3D"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_monster")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="Visuals" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+
+[node name="Body" type="MeshInstance3D" parent="Visuals"]
+mesh = SubResource("SphereMesh_body")
+
+[node name="Head" type="Node3D" parent="Visuals/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+
+[node name="LeftEye" type="MeshInstance3D" parent="Visuals/Body/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 0.1, 0.45)
+mesh = SubResource("SphereMesh_eye_white")
+
+[node name="Pupil" type="MeshInstance3D" parent="Visuals/Body/Head/LeftEye"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+mesh = SubResource("SphereMesh_pupil")
+
+[node name="RightEye" type="MeshInstance3D" parent="Visuals/Body/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 0.1, 0.45)
+mesh = SubResource("SphereMesh_eye_white")
+
+[node name="Pupil" type="MeshInstance3D" parent="Visuals/Body/Head/RightEye"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+mesh = SubResource("SphereMesh_pupil")
+
+[node name="LeftHorn" type="MeshInstance3D" parent="Visuals/Body/Head"]
+transform = Transform3D(0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0, 1, -0.25, 0.5, 0)
+mesh = SubResource("CylinderMesh_horn")
+
+[node name="RightHorn" type="MeshInstance3D" parent="Visuals/Body/Head"]
+transform = Transform3D(0.939693, -0.34202, 0, 0.34202, 0.939693, 0, 0, 0, 1, 0.25, 0.5, 0)
+mesh = SubResource("CylinderMesh_horn")
+
+[node name="AuraLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+light_color = Color(0.85, 0.35, 0.95, 1)
+light_energy = 2.0
+omni_range = 8.0
+omni_attenuation = 1.5

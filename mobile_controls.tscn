@@ -1,0 +1,234 @@
+[gd_scene format=3 uid="uid://cmobilectrl01"]
+
+[ext_resource type="Script" path="res://mobile_controls.gd" id="1_mctrl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_joy_base"]
+bg_color = Color(0.08, 0.1, 0.14, 0.55)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.65, 0.75, 0.9, 0.55)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_joy_knob"]
+bg_color = Color(0.95, 0.85, 0.45, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.96, 0.8, 0.95)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_btn"]
+bg_color = Color(0.12, 0.15, 0.22, 0.82)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.6, 0.78, 0.75)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_pressed"]
+bg_color = Color(0.28, 0.34, 0.48, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.88, 0.45, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_interact_btn"]
+bg_color = Color(0.22, 0.19, 0.1, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.8, 0.35, 0.95)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 8
+
+[node name="MobileControls" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_mctrl")
+
+[node name="LookPad" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopRightMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -330.0
+offset_bottom = 72.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+
+[node name="TopBar" type="HBoxContainer" parent="TopRightMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="PcLockButton" type="Button" parent="TopRightMargin/TopBar"]
+custom_minimum_size = Vector2(145, 42)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_action_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_pressed")
+text = "🖱️ 마우스 고정(PC)"
+
+[node name="TitleButton" type="Button" parent="TopRightMargin/TopBar"]
+custom_minimum_size = Vector2(130, 42)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_action_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_pressed")
+text = "🏠 타이틀로"
+
+[node name="JoystickMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -236.0
+offset_right = 246.0
+grow_vertical = 0
+theme_override_constants/margin_left = 34
+theme_override_constants/margin_bottom = 34
+
+[node name="JoystickArea" type="Control" parent="JoystickMargin"]
+custom_minimum_size = Vector2(190, 190)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="JoystickBase" type="Panel" parent="JoystickMargin/JoystickArea"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 175.0
+offset_bottom = 175.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_joy_base")
+
+[node name="JoystickKnob" type="Panel" parent="JoystickMargin/JoystickArea/JoystickBase"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 46.0
+offset_right = 114.0
+offset_bottom = 114.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_joy_knob")
+
+[node name="JoyLabel" type="Label" parent="JoystickMargin/JoystickArea"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = -10.0
+offset_right = 175.0
+offset_bottom = 12.0
+theme_override_colors/font_color = Color(0.8, 0.86, 0.95, 0.7)
+theme_override_font_sizes/font_size = 13
+text = "이동 조이스틱"
+horizontal_alignment = 1
+
+[node name="ActionMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -360.0
+offset_top = -210.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 34
+
+[node name="VBox" type="VBoxContainer" parent="ActionMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 2
+
+[node name="InteractButton" type="Button" parent="ActionMargin/VBox"]
+custom_minimum_size = Vector2(316, 58)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_interact_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_action_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_interact_btn")
+text = "📜 쪽지 풀기 (주변 탐색)"
+
+[node name="ButtonRow" type="HBoxContainer" parent="ActionMargin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="SprintButton" type="Button" parent="ActionMargin/VBox/ButtonRow"]
+custom_minimum_size = Vector2(112, 64)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_action_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_pressed")
+text = "🏃 달리기"
+
+[node name="FlashlightButton" type="Button" parent="ActionMargin/VBox/ButtonRow"]
+custom_minimum_size = Vector2(96, 64)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_action_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_pressed")
+text = "🔦 손전등"
+
+[node name="JumpButton" type="Button" parent="ActionMargin/VBox/ButtonRow"]
+custom_minimum_size = Vector2(88, 64)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_action_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_pressed")
+text = "⬆️ 점프"

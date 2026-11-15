@@ -1,0 +1,51 @@
+name: Deploy Godot 4 Web to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  export_web:
+    runs-on: ubuntu-latest
+    name: Export Web and Deploy
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Setup Godot Export
+        uses: firebelley/godot-export@v6.0.0
+        with:
+          godot_version: 4.3
+          export_debug: false
+          relative_project_path: ./
+          archive_output: false
+
+      - name: Ensure COOP/COEP Headers for Web
+        run: |
+          # GitHub Pages or web host support for SharedArrayBuffer
+          echo "/*" > build/web/_headers
+          echo "  Cross-Origin-Opener-Policy: same-origin" >> build/web/_headers
+          echo "  Cross-Origin-Embedder-Policy: require-corp" >> build/web/_headers
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
