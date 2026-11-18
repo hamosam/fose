@@ -440,7 +440,7 @@ func _resume_gameplay() -> void:
 func _update_note_ui() -> void:
 	if note_count_label:
 		var hearts: String = "❤️".repeat(max(lives, 0))
-		note_count_label.text = "국어 쪽지: %d / %d | 목숨: %s" % [collected_notes, total_notes, hearts]
+		note_count_label.text = "수학 쪽지: %d / %d | 목숨: %s" % [collected_notes, total_notes, hearts]
 
 func on_player_hit() -> bool:
 	if is_game_over or is_game_won or is_solving_quiz or invincible_timer > 0.0:
