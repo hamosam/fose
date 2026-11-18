@@ -8,10 +8,10 @@ enum State {
 }
 
 @export_group("Speeds")
-@export var base_chase_speed: float = 4.6
-@export var max_chase_speed: float = 5.6
-@export var lurk_speed: float = 1.6
-@export var current_chase_speed: float = 4.6
+@export var base_chase_speed: float = 3.2
+@export var max_chase_speed: float = 4.1
+@export var lurk_speed: float = 1.2
+@export var current_chase_speed: float = 3.2
 
 @onready var visuals: Node3D = $Visuals
 @onready var aura_light: OmniLight3D = $AuraLight
@@ -200,11 +200,22 @@ func _notify_glitch(intensity: float) -> void:
 		gm.trigger_glitch_burst(intensity)
 
 func _catch_player() -> void:
-	caught_player = true
-	velocity = Vector3.ZERO
-	if player:
-		visuals.look_at(player.global_position, Vector3.UP)
-	
 	var gm = get_tree().root.get_node_or_null("Main/GameManager")
-	if gm and gm.has_method("game_over"):
+	if gm and gm.has_method("on_player_hit"):
+		var hit_applied: bool = gm.on_player_hit()
+		if not hit_applied:
+			return
+		if gm.is_game_over:
+			caught_player = true
+			velocity = Vector3.ZERO
+			if player:
+				visuals.look_at(player.global_position, Vector3.UP)
+		else:
+			# 목숨이 남았으면 즉시 안개 속으로 사라지며 도망갈 시간 부여
+			_enter_state(State.FADING)
+	elif gm and gm.has_method("game_over"):
+		caught_player = true
+		velocity = Vector3.ZERO
+		if player:
+			visuals.look_at(player.global_position, Vector3.UP)
 		gm.game_over()

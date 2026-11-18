@@ -32,7 +32,7 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
 	float v = 0.0;
 	float a = 0.5;
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 2; i++) {
 		v += a * noise(p);
 		p *= 2.1;
 		a *= 0.5;
@@ -43,18 +43,17 @@ float fbm(vec2 p) {
 void fragment() {
 	vec2 uv = world_pos.xz;
 	
-	// 큰 스케일 군락 노이즈
+	// 큰 스케일 군락 노이즈 (2회 루프)
 	float n_macro = fbm(uv * 0.12);
-	// 중간 잔디 패치
-	float n_mid = fbm(uv * 0.8);
-	// 미세 잔디 질감
-	float n_micro = fbm(uv * 3.5);
+	// 중간/미세 잔디 질감 (단일 noise 호출로 경량화)
+	float n_mid = noise(uv * 0.8);
+	float n_micro = noise(uv * 3.5);
 	
 	vec3 base_grass = mix(grass_color_dark, grass_color_mid, n_micro * 0.8 + n_mid * 0.2);
 	vec3 patch_grass = mix(base_grass, grass_color_dry, n_macro);
 	
-	// 간간이 보이는 어두운 흙 패치
-	float dirt_patch = smoothstep(0.68, 0.85, fbm(uv * 0.25 + 5.0));
+	// 간간이 보이는 어두운 흙 패치 (단일 noise 호출)
+	float dirt_patch = smoothstep(0.68, 0.85, noise(uv * 0.25 + 5.0));
 	vec3 final_color = mix(patch_grass, soil_color, dirt_patch * 0.6);
 	
 	ALBEDO = final_color;

@@ -1,8 +1,12 @@
 extends Node
 
 @export var total_notes: int = 10
+@export var max_lives: int = 3
+@export var invincible_duration: float = 2.5
 
 var collected_notes: int = 0
+var lives: int = 3
+var invincible_timer: float = 0.0
 var is_game_over: bool = false
 var is_game_won: bool = false
 var is_solving_quiz: bool = false
@@ -43,6 +47,8 @@ var heartbeat_timer: float = 0.0
 
 func _ready() -> void:
 	collected_notes = 0
+	lives = max_lives
+	invincible_timer = 0.0
 	is_game_over = false
 	is_game_won = false
 	is_solving_quiz = false
@@ -200,6 +206,10 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	if is_game_over or is_game_won:
 		return
+
+	# 피격 후 무적 타이머
+	if invincible_timer > 0.0:
+		invincible_timer -= delta
 
 	# 쪽지 메시지 표시 타이머
 	if msg_timer > 0.0:
@@ -429,7 +439,28 @@ func _resume_gameplay() -> void:
 
 func _update_note_ui() -> void:
 	if note_count_label:
-		note_count_label.text = "수학 쪽지: %d / %d" % [collected_notes, total_notes]
+		var hearts: String = "❤️".repeat(max(lives, 0))
+		note_count_label.text = "국어 쪽지: %d / %d | 목숨: %s" % [collected_notes, total_notes, hearts]
+
+func on_player_hit() -> bool:
+	if is_game_over or is_game_won or is_solving_quiz or invincible_timer > 0.0:
+		return false
+
+	lives = max(lives - 1, 0)
+	_update_note_ui()
+
+	if lives <= 0:
+		game_over()
+		return true
+
+	invincible_timer = invincible_duration
+	trigger_glitch_burst(0.8)
+	if heartbeat_player:
+		heartbeat_player.play()
+	if message_label:
+		message_label.text = "괴물과 부딪혔습니다! 도망치세요! (남은 목숨: %d / %d)" % [lives, max_lives]
+		msg_timer = 2.5
+	return true
 
 func game_over() -> void:
 	if is_game_won:
