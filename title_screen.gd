@@ -3,7 +3,8 @@ extends Control
 @onready var start_button: Button = $UI/MarginContainer/VBoxContainer/MenuButtons/StartButton
 @onready var howto_button: Button = $UI/MarginContainer/VBoxContainer/MenuButtons/HowToButton
 @onready var quit_button: Button = $UI/MarginContainer/VBoxContainer/MenuButtons/QuitButton
-@onready var howto_modal: Control = $HowToModal
+@onready var howto_modal: CanvasLayer = $HowToModal
+@onready var dimmer: ColorRect = $HowToModal/Dimmer
 @onready var close_howto_button: Button = $HowToModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CloseHowToButton
 @onready var camera_pivot: Node3D = $Diorama/CameraPivot
 @onready var monster_node: Node3D = $Diorama/MonsterPeeking
@@ -24,8 +25,18 @@ func _ready() -> void:
 	howto_button.mouse_entered.connect(_play_hover_sfx)
 	quit_button.mouse_entered.connect(_play_hover_sfx)
 	close_howto_button.mouse_entered.connect(_play_hover_sfx)
-	
+	if dimmer:
+		dimmer.gui_input.connect(_on_dimmer_gui_input)
+
 	howto_modal.visible = false
+
+func _on_dimmer_gui_input(event: InputEvent) -> void:
+	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventScreenTouch and event.pressed):
+		_on_close_howto_pressed()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if howto_modal and howto_modal.visible and event.is_action_pressed("ui_cancel"):
+		_on_close_howto_pressed()
 
 func _process(delta: float) -> void:
 	cam_time += delta * 0.5

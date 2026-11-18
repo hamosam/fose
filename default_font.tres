@@ -1,0 +1,8 @@
+[gd_resource type="FontVariation" load_steps=3 format=3]
+
+[ext_resource type="FontFile" uid="uid://4obwf24wfggc" path="res://malgun.ttf" id="1_malgun"]
+[ext_resource type="FontFile" path="res://Twemoji.Mozilla.ttf" id="2_emoji"]
+
+[resource]
+base_font = ExtResource("1_malgun")
+fallbacks = Array[Font]([ExtResource("2_emoji")])

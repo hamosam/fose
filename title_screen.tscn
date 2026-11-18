@@ -223,17 +223,11 @@ theme_override_colors/font_color = Color(0.65, 0.72, 0.82, 1)
 theme_override_font_sizes/font_size = 14
 text = "※ 태블릿/모바일: 왼쪽 조이스틱 이동 · 화면 드래그 시점 회전 · 우측 터치 버튼 | PC: WASD · Shift · E · F | 출처: 하모쌤"
 
-[node name="HowToModal" type="Control" parent="."]
+[node name="HowToModal" type="CanvasLayer" parent="."]
+layer = 10
 visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="Dimmer" type="ColorRect" parent="HowToModal"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -242,7 +236,6 @@ grow_vertical = 2
 color = Color(0.02, 0.02, 0.04, 0.78)
 
 [node name="CenterContainer" type="CenterContainer" parent="HowToModal"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -250,7 +243,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="HowToModal/CenterContainer"]
-custom_minimum_size = Vector2(620, 500)
+custom_minimum_size = Vector2(620, 520)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
 
@@ -275,9 +268,17 @@ horizontal_alignment = 1
 [node name="HSeparator" type="HSeparator" parent="HowToModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="RulesText" type="RichTextLabel" parent="HowToModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 310)
+[node name="ScrollContainer" type="ScrollContainer" parent="HowToModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 330)
 layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="RulesText" type="RichTextLabel" parent="HowToModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
 text = "[color=#ffeb99][b]1. 게임의 목표[/b][/color]
@@ -294,6 +295,8 @@ text = "[color=#ffeb99][b]1. 게임의 목표[/b][/color]
 • [color=#f72585][b]추격 시 탈출:[/b][/color] 괴물이 쫓아올 때는 [b]🏃달리기 버튼(또는 Shift)[/b]을 켜고 전력질주하세요. 몇 초 뒤면 괴물이 스윽 안개 속으로 사라집니다!
 
 [color=#ffd166][b]🎓 기획 및 출처 : 하모쌤[/b][/color]"
+fit_content = true
+scroll_active = false
 
 [node name="CloseHowToButton" type="Button" parent="HowToModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 42)
