@@ -33,7 +33,7 @@ enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 
 [gui]
 
-theme/custom_font="uid://b6noqq1ejo67c"
+theme/custom_font="uid://4obwf24wfggc"
 
 [input]
 
